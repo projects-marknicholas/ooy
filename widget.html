@@ -1,0 +1,161 @@
+<!-- Chatbot Widget -->
+<div id="chatbot-widget">
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width="24" 
+    height="24" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="#ffffff" 
+    stroke-width="2" 
+    stroke-linecap="round" 
+    stroke-linejoin="round" 
+    class="lucide lucide-message-circle-more"
+  >
+    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
+    <path d="M8 12h.01"/>
+    <path d="M12 12h.01"/>
+    <path d="M16 12h.01"/>
+  </svg>
+</div>
+
+<!-- Chatbox Popup -->
+<div id="chatbox-popup">
+  <div id="chatbox-header">
+    <span>Chat with us!</span>
+    <button id="chatbox-close">&times;</button>
+  </div>
+  <div id="chat-main">
+    <div id="chatbox-body">
+      
+    </div>
+    <div id="chat-input">
+      <input type="text" id="chat-input-field" name="chat" placeholder="Type your message..." />
+      <button id="send-button">Send</button>
+    </div>
+  </div>
+</div>
+
+<style>
+*{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
+/* Chatbot Widget */
+#chatbot-widget {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 1000;
+  height: 50px;
+  width: 50px;
+  background-color: #4fcacb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* Chatbox Popup */
+#chatbox-popup {
+  position: fixed;
+  bottom: 90px;
+  right: 25px;
+  width: 300px;
+  height: 400px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  display: none; 
+  flex-direction: column;
+  z-index: 1001;
+}
+
+#chatbox-header {
+  background-color: #4fcacb;
+  color: #fff;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#chatbox-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+#chat-main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; 
+  overflow: hidden; 
+}
+
+#chatbox-body {
+  flex-grow: 1;
+  overflow-y: auto; 
+  padding: 10px;
+  background-color: white;
+}
+
+#chats {
+  display: flex;
+  align-items: center;
+  margin: 12px 0;
+}
+
+#chats #chat-left {
+  margin-left: 12px;
+  max-width: 80%;
+  background-color: #eeeeee;
+  color: black;
+  padding: 8px;
+  border-radius: 5px 5px 5px 0;
+  word-break: break-all;
+}
+
+#chats #chat-right {
+  margin-left: auto;
+  margin-right: 12px;
+  max-width: 80%;
+  background-color: #4fcacb;
+  color: white;
+  padding: 8px;
+  border-radius: 5px 5px 0 5px;
+  word-break: break-all;
+}
+#chat-input{
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background-color: white;
+}
+#chat-input input{
+  padding: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  width: 100%;
+  outline: none;
+  border-radius: 5px 0 0 5px;
+}
+#chat-input button{
+  background-color: #4fcacb;
+  color: white;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 9px;
+  border-radius: 0 5px 5px 0;
+}
+</style>
+
+<script src="https://unpkg.com/framer-motion@10.12.16/dist/framer-motion.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+const _0x41511a=_0x405e;(function(_0x34e5ca,_0x49db6a){const _0x51ae47=_0x405e,_0x4cc75d=_0x34e5ca();while(!![]){try{const _0x536900=parseInt(_0x51ae47(0x169))/0x1+-parseInt(_0x51ae47(0x154))/0x2+-parseInt(_0x51ae47(0x15d))/0x3+-parseInt(_0x51ae47(0x15f))/0x4+-parseInt(_0x51ae47(0x15a))/0x5+-parseInt(_0x51ae47(0x157))/0x6+parseInt(_0x51ae47(0x183))/0x7*(parseInt(_0x51ae47(0x17d))/0x8);if(_0x536900===_0x49db6a)break;else _0x4cc75d['push'](_0x4cc75d['shift']());}catch(_0x5220a9){_0x4cc75d['push'](_0x4cc75d['shift']());}}}(_0x1edf,0x61074));const chatbotWidget=document['getElementById'](_0x41511a(0x15e)),chatboxPopup=document[_0x41511a(0x156)]('chatbox-popup'),chatboxClose=document[_0x41511a(0x156)](_0x41511a(0x182)),chatInputField=document[_0x41511a(0x156)]('chat-input-field'),sendButton=document[_0x41511a(0x156)]('send-button'),chatboxBody=document['getElementById'](_0x41511a(0x162)),keywordImages={'diamond':_0x41511a(0x178),'silk':_0x41511a(0x17f),'agas':_0x41511a(0x166),'cryocell':_0x41511a(0x164),'blue\x20light':_0x41511a(0x15b),'ipl':_0x41511a(0x17c),'intense\x20pulse':_0x41511a(0x17c),'radio':_0x41511a(0x153),'fractional':'https://i.postimg.cc/1zn8rC0S/Fractional-CO2-Laser.jpg','pastelle':'https://i.postimg.cc/hjvhwtvB/Pastelle-Laser.jpg','our\x20services':'https://i.postimg.cc/zBGPQhBq/Services.png','list\x20of\x20services':_0x41511a(0x16b),'pay':_0x41511a(0x15c),'beth':_0x41511a(0x177),'ocean\x20of\x20youth':'https://i.postimg.cc/59nWySsn/IMG-3811-1.jpg'};chatbotWidget[_0x41511a(0x16f)]('click',()=>{const _0x57e2d9=_0x41511a;chatboxPopup[_0x57e2d9(0x17b)]['display']=_0x57e2d9(0x174);}),chatboxClose['addEventListener'](_0x41511a(0x16d),()=>{const _0x15ca25=_0x41511a;chatboxPopup[_0x15ca25(0x17b)][_0x15ca25(0x167)]='none';});async function sendMessage(){const _0x4ff9e6=_0x41511a,_0x3f33ca=chatInputField['value'][_0x4ff9e6(0x16a)]();if(_0x3f33ca){sendButton[_0x4ff9e6(0x17e)]=!![],sendButton[_0x4ff9e6(0x165)]=_0x4ff9e6(0x161);const _0x52b03c=document[_0x4ff9e6(0x159)](_0x4ff9e6(0x152));_0x52b03c['id']='chats',_0x52b03c[_0x4ff9e6(0x172)]='<div\x20id=\x22chat-right\x22>'+_0x3f33ca+_0x4ff9e6(0x168),chatboxBody[_0x4ff9e6(0x181)](_0x52b03c),chatInputField[_0x4ff9e6(0x184)]='',chatboxBody['scrollTop']=chatboxBody['scrollHeight'];try{const _0x28e341=await fetch('https://symptracklb.com/bfar/widget.php',{'method':_0x4ff9e6(0x16e),'headers':{'Content-Type':_0x4ff9e6(0x17a)},'body':JSON['stringify']({'input':_0x3f33ca})}),_0x33b394=await _0x28e341['json'](),_0x95725=_0x33b394['response'][_0x4ff9e6(0x179)](),_0xaa7e38=document[_0x4ff9e6(0x159)]('div');_0xaa7e38['id']='chats',_0xaa7e38['innerHTML']=_0x4ff9e6(0x180)+marked['parse'](_0x33b394[_0x4ff9e6(0x170)])+'</div>',chatboxBody['appendChild'](_0xaa7e38);let _0x16a089=![];for(const _0x150e52 in keywordImages){if(_0x95725[_0x4ff9e6(0x155)](_0x150e52)){_0x16a089=!![];const _0x114c0e=document[_0x4ff9e6(0x159)]('div');_0x114c0e['id']=_0x4ff9e6(0x175),_0x114c0e[_0x4ff9e6(0x172)]='<div\x20id=\x22chat-left\x22><img\x20src=\x22'+keywordImages[_0x150e52]+_0x4ff9e6(0x16c)+_0x150e52+_0x4ff9e6(0x158),chatboxBody[_0x4ff9e6(0x181)](_0x114c0e);}}_0x16a089&&(chatboxBody[_0x4ff9e6(0x173)]=chatboxBody[_0x4ff9e6(0x150)]);}catch(_0x288bec){console[_0x4ff9e6(0x160)]('Error:',_0x288bec);}finally{sendButton[_0x4ff9e6(0x17e)]=![],sendButton[_0x4ff9e6(0x165)]=_0x4ff9e6(0x163);}}}function _0x405e(_0x460a6f,_0x4ddd7b){const _0x1edfdf=_0x1edf();return _0x405e=function(_0x405e98,_0x4f3137){_0x405e98=_0x405e98-0x150;let _0x798634=_0x1edfdf[_0x405e98];return _0x798634;},_0x405e(_0x460a6f,_0x4ddd7b);}function _0x1edf(){const _0x3b83d6=['scrollHeight','Enter','div','https://i.postimg.cc/TY05dW2z/Radiofrequency.jpg','1514888rndnaW','includes','getElementById','4123836OCmHnJ','\x22\x20style=\x22max-width:\x20100%;\x20border-radius:\x208px;\x20margin-top:\x205px;\x22></div>','createElement','274450NeMgKp','https://i.postimg.cc/zB8VkkZV/Blue-Light-Therapy.jpg','https://i.postimg.cc/MHxJXHZ4/payment.png','56148jMVPYx','chatbot-widget','959276YPPsVv','error','...','chatbox-body','Send','https://i.postimg.cc/rsYsMXdr/Cryocell.jpg','textContent','https://p1-mediaserver.s3.ap-southeast-1.amazonaws.com/page-builder/store/images/1719309615528-agas%20organic%20facial.png','display','</div>','394329PPjxbe','trim','https://i.postimg.cc/zBGPQhBq/Services.png','\x22\x20alt=\x22','click','POST','addEventListener','response','preventDefault','innerHTML','scrollTop','flex','chats','keydown','https://i.postimg.cc/hjGW1Jj9/IMG-3775-1.jpg','https://i.postimg.cc/DZF0sgGB/diamond-peel.png','toLowerCase','application/json','style','https://i.postimg.cc/bwYbk9FY/Intense-Pulse-Light-IPL.jpg','7045096FOlEFS','disabled','https://i.postimg.cc/4xDm4ZxC/silkpeel.jpg','<div\x20id=\x22chat-left\x22>','appendChild','chatbox-close','14rThusF','value','key'];_0x1edf=function(){return _0x3b83d6;};return _0x1edf();}sendButton[_0x41511a(0x16f)]('click',sendMessage),chatInputField[_0x41511a(0x16f)](_0x41511a(0x176),_0xa396ec=>{const _0x1c9de5=_0x41511a;_0xa396ec[_0x1c9de5(0x185)]===_0x1c9de5(0x151)&&!sendButton[_0x1c9de5(0x17e)]&&(_0xa396ec[_0x1c9de5(0x171)](),sendMessage());});
+</script>

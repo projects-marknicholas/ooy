@@ -1,278 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Web Page</title>
 </head>
+<body>
+  <h1>Welcome to My Web Page</h1>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+  // Get elements
+  const chatbotWidget = document.getElementById("chatbot-widget");
+  const chatboxPopup = document.getElementById("chatbox-popup");
+  const chatboxClose = document.getElementById("chatbox-close");
+  const chatInputField = document.getElementById("chat-input-field");
+  const sendButton = document.getElementById("send-button");
+  const chatboxBody = document.getElementById("chatbox-body");
 
-<!-- Chatbot Widget -->
-<div id="chatbot-widget">
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width="24" 
-    height="24" 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="#ffffff" 
-    stroke-width="2" 
-    stroke-linecap="round" 
-    stroke-linejoin="round" 
-    class="lucide lucide-message-circle-more"
-  >
-    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
-    <path d="M8 12h.01"/>
-    <path d="M12 12h.01"/>
-    <path d="M16 12h.01"/>
-  </svg>
-</div>
+  // Keyword-image mapping
+  const keywordImages = {
+    diamond: "https://i.postimg.cc/DZF0sgGB/diamond-peel.png",
+    silk: "https://i.postimg.cc/4xDm4ZxC/silkpeel.jpg",
+    agas: "https://p1-mediaserver.s3.ap-southeast-1.amazonaws.com/page-builder/store/images/1719309615528-agas%20organic%20facial.png",
+    cryocell: "https://i.postimg.cc/rsYsMXdr/Cryocell.jpg",
+    "blue light": "https://i.postimg.cc/zB8VkkZV/Blue-Light-Therapy.jpg",
+    ipl: "https://i.postimg.cc/bwYbk9FY/Intense-Pulse-Light-IPL.jpg",
+    "intense pulse": "https://i.postimg.cc/bwYbk9FY/Intense-Pulse-Light-IPL.jpg",
+    radio: "https://i.postimg.cc/TY05dW2z/Radiofrequency.jpg",
+    fractional: "https://i.postimg.cc/1zn8rC0S/Fractional-CO2-Laser.jpg",
+    pastelle: "https://i.postimg.cc/hjvhwtvB/Pastelle-Laser.jpg",
+    "our services": "https://i.postimg.cc/zBGPQhBq/Services.png",
+    "list of services": "https://i.postimg.cc/zBGPQhBq/Services.png",
+    pay: "https://i.postimg.cc/MHxJXHZ4/payment.png",
+    beth: "https://i.postimg.cc/hjGW1Jj9/IMG-3775-1.jpg",
+    "ocean of youth": "https://i.postimg.cc/59nWySsn/IMG-3811-1.jpg",
+  };
 
-<!-- Chatbox Popup -->
-<div id="chatbox-popup">
-  <div id="chatbox-header">
-    <span>Chat with us!</span>
-    <button id="chatbox-close">&times;</button>
-  </div>
-  <div id="chat-main">
-    <div id="chatbox-body">
-      
-    </div>
-    <div id="chat-input">
-      <input type="text" id="chat-input-field" name="chat" placeholder="Type your message..." />
-      <button id="send-button">Send</button>
-    </div>
-  </div>
-</div>
+  // Toggle chatbox visibility
+  chatbotWidget.addEventListener("click", () => {
+    chatboxPopup.style.display = "flex";
+  });
 
-<style>
-*{
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
-}
-/* Chatbot Widget */
-#chatbot-widget {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  z-index: 1000;
-  height: 50px;
-  width: 50px;
-  background-color: #4fcacb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 100px;
-  cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
+  // Close chatbox
+  chatboxClose.addEventListener("click", () => {
+    chatboxPopup.style.display = "none";
+  });
 
-/* Chatbox Popup */
-#chatbox-popup {
-  position: fixed;
-  bottom: 90px;
-  right: 25px;
-  width: 300px;
-  height: 400px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  display: none; 
-  flex-direction: column;
-  z-index: 1001;
-}
+  // Function to send message
+  async function sendMessage() {
+    const userInput = chatInputField.value.trim();
 
-#chatbox-header {
-  background-color: #4fcacb;
-  color: #fff;
-  padding: 10px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    if (userInput) {
+      // Disable button and change text
+      sendButton.disabled = true;
+      sendButton.textContent = "...";
 
-#chatbox-close {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 20px;
-  cursor: pointer;
-}
-#chat-main {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1; 
-  overflow: hidden; 
-}
+      // Add user message to chat
+      const userMessage = document.createElement("div");
+      userMessage.id = "chats";
+      userMessage.innerHTML = `<div id="chat-right">${userInput}</div>`;
+      chatboxBody.appendChild(userMessage);
 
-#chatbox-body {
-  flex-grow: 1;
-  overflow-y: auto; 
-  padding: 10px;
-  background-color: white;
-}
+      // Clear input field
+      chatInputField.value = "";
 
-#chats {
-  display: flex;
-  align-items: center;
-  margin: 12px 0;
-}
+      // Scroll to bottom of chat
+      chatboxBody.scrollTop = chatboxBody.scrollHeight;
 
-#chats #chat-left {
-  margin-left: 12px;
-  max-width: 80%;
-  background-color: #eeeeee;
-  color: black;
-  padding: 8px;
-  border-radius: 5px 5px 5px 0;
-  word-break: break-all;
-}
+      // Send input to backend
+      try {
+        const response = await fetch("https://symptracklb.com/bfar/widget.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ input: userInput }),
+        });
 
-#chats #chat-right {
-  margin-left: auto;
-  margin-right: 12px;
-  max-width: 80%;
-  background-color: #4fcacb;
-  color: white;
-  padding: 8px;
-  border-radius: 5px 5px 0 5px;
-  word-break: break-all;
-}
-#chat-input{
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  background-color: white;
-}
-#chat-input input{
-  padding: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  width: 100%;
-  outline: none;
-  border-radius: 5px 0 0 5px;
-}
-#chat-input button{
-  background-color: #4fcacb;
-  color: white;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 9px;
-  border-radius: 0 5px 5px 0;
-}
-</style>
+        const data = await response.json();
+        const aiResponse = data.response.toLowerCase();
 
-<script src="https://unpkg.com/framer-motion@10.12.16/dist/framer-motion.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script>
-// Get elements
-const chatbotWidget = document.getElementById('chatbot-widget');
-const chatboxPopup = document.getElementById('chatbox-popup');
-const chatboxClose = document.getElementById('chatbox-close');
-const chatInputField = document.getElementById('chat-input-field');
-const sendButton = document.getElementById('send-button');
-const chatboxBody = document.getElementById('chatbox-body');
+        // Convert Markdown to HTML
+        const aiMessage = document.createElement("div");
+        aiMessage.id = "chats";
+        aiMessage.innerHTML = `<div id="chat-left">${marked.parse(data.response)}</div>`;
+        chatboxBody.appendChild(aiMessage);
 
-// Keyword-image mapping
-const keywordImages = {
-  "diamond": "https://i.postimg.cc/DZF0sgGB/diamond-peel.png",
-  "silk": "https://i.postimg.cc/4xDm4ZxC/silkpeel.jpg",
-  "agas": "https://p1-mediaserver.s3.ap-southeast-1.amazonaws.com/page-builder/store/images/1719309615528-agas%20organic%20facial.png",
-  "cryocell": "https://i.postimg.cc/rsYsMXdr/Cryocell.jpg",
-  "blue light": "https://i.postimg.cc/zB8VkkZV/Blue-Light-Therapy.jpg",
-  "ipl": "https://i.postimg.cc/bwYbk9FY/Intense-Pulse-Light-IPL.jpg",
-  "intense pulse": "https://i.postimg.cc/bwYbk9FY/Intense-Pulse-Light-IPL.jpg",
-  "radio": "https://i.postimg.cc/TY05dW2z/Radiofrequency.jpg",
-  "fractional": "https://i.postimg.cc/1zn8rC0S/Fractional-CO2-Laser.jpg",
-  "pastelle": "https://i.postimg.cc/hjvhwtvB/Pastelle-Laser.jpg",
-  "our services": "https://i.postimg.cc/zBGPQhBq/Services.png",
-  "list of services": "https://i.postimg.cc/zBGPQhBq/Services.png",
-  "pay": "https://i.postimg.cc/MHxJXHZ4/payment.png",
-  "beth": "https://i.postimg.cc/hjGW1Jj9/IMG-3775-1.jpg",
-  "ocean of youth": "https://i.postimg.cc/59nWySsn/IMG-3811-1.jpg"
-};
-
-// Toggle chatbox visibility
-chatbotWidget.addEventListener('click', () => {
-  chatboxPopup.style.display = 'flex';
-});
-
-// Close chatbox
-chatboxClose.addEventListener('click', () => {
-  chatboxPopup.style.display = 'none';
-});
-
-// Function to send message
-async function sendMessage() {
-  const userInput = chatInputField.value.trim();
-
-  if (userInput) {
-    // Disable button and change text
-    sendButton.disabled = true;
-    sendButton.textContent = '...';
-
-    // Add user message to chat
-    const userMessage = document.createElement('div');
-    userMessage.id = 'chats';
-    userMessage.innerHTML = `<div id="chat-right">${userInput}</div>`;
-    chatboxBody.appendChild(userMessage);
-
-    // Clear input field
-    chatInputField.value = '';
-
-    // Scroll to bottom of chat
-    chatboxBody.scrollTop = chatboxBody.scrollHeight;
-
-    // Send input to backend
-    try {
-      const response = await fetch('https://symptracklb.com/bfar/widget.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ input: userInput }),
-      });
-
-      const data = await response.json();
-      const aiResponse = data.response.toLowerCase(); 
-
-      // Convert Markdown to HTML
-      const aiMessage = document.createElement('div');
-      aiMessage.id = 'chats';
-      aiMessage.innerHTML = `<div id="chat-left">${marked.parse(data.response)}</div>`;
-      chatboxBody.appendChild(aiMessage);
-
-      let imagesFound = false;
-      for (const keyword in keywordImages) {
-        if (aiResponse.includes(keyword)) {
-          imagesFound = true;
-          const imageMessage = document.createElement('div');
-          imageMessage.id = 'chats';
-          imageMessage.innerHTML = `<div id="chat-left"><img src="${keywordImages[keyword]}" alt="${keyword}" style="max-width: 100%; border-radius: 8px; margin-top: 5px;"></div>`;
-          chatboxBody.appendChild(imageMessage);
+        let imagesFound = false;
+        for (const keyword in keywordImages) {
+          if (aiResponse.includes(keyword)) {
+            imagesFound = true;
+            const imageMessage = document.createElement("div");
+            imageMessage.id = "chats";
+            imageMessage.innerHTML = `<div id="chat-left"><img src="${keywordImages[keyword]}" alt="${keyword}" style="max-width: 100%; border-radius: 8px; margin-top: 5px;"></div>`;
+            chatboxBody.appendChild(imageMessage);
+          }
         }
-      }
 
-      // If images were added, scroll to bottom again
-      if (imagesFound) {
-        chatboxBody.scrollTop = chatboxBody.scrollHeight;
+        // If images were added, scroll to bottom again
+        if (imagesFound) {
+          chatboxBody.scrollTop = chatboxBody.scrollHeight;
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        // Enable button and reset text
+        sendButton.disabled = false;
+        sendButton.textContent = "Send";
       }
-
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      // Enable button and reset text
-      sendButton.disabled = false;
-      sendButton.textContent = 'Send';
     }
   }
-}
 
-// Click event for send button
-sendButton.addEventListener('click', sendMessage);
+  // Click event for send button
+  sendButton.addEventListener("click", sendMessage);
 
-// Listen for Enter key press
-chatInputField.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter' && !sendButton.disabled) {
-    event.preventDefault(); // Prevent newline in input
-    sendMessage();
-  }
+  // Listen for Enter key press
+  chatInputField.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !sendButton.disabled) {
+      event.preventDefault(); // Prevent newline in input
+      sendMessage();
+    }
+  });
 });
-
-</script>
+  </script>
+</body>
+</html>
